@@ -1,0 +1,43 @@
+{
+  "name": "basic-cloud-infra",
+  "version": "1.0.0",
+  "description": "Basic Cloud Infrastructure for deploying Apps using an ALB",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "cdk": "cdk",
+    "test": "jest",
+    "deploy:staging": "npm run build && cdk deploy --require-approval never --app \"ts-node bin/cloud-infra-app.ts --env Staging --account your-staging-account-id\"",
+    "deploy:prod": "npm run build && cdk deploy --require-approval never --app \"ts-node bin/cloud-infra-app.ts --env Production --account your-prod-account-id\"",
+    "deploy": "npm run build && ts-node bin/cloud-infra-app.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emverwell/basic-cloud-infra.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/emverwell/basic-cloud-infra/issues"
+  },
+  "homepage": "https://github.com/emverwell/basic-cloud-infra#readme",
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.3.0",
+    "aws-cdk": "^2.1025.0",
+    "jest": "^30.0.5",
+    "jest-junit": "^16.0.0",
+    "source-map-support": "^0.5.21",
+    "ts-jest": "^29.4.1",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "@types/yargs": "^17.0.33",
+    "aws-cdk-lib": "^2.212.0",
+    "constructs": "^10.4.2",
+    "yargs": "^18.0.0"
+  }
+}
