@@ -33,7 +33,9 @@ Using CDK in TypeScript to test Apps that use ECS
 
 3. Deploy the stack:
    ```
-   cdk deploy
+   export AWS_ACCOUNT_ID=123456789012
+   export AWS_REGION=region-1
+   cdk deploy --app "ts-node bin/cloud-infra-app.ts --env Development --account $AWS_ACCOUNT_ID --region $AWS_REGION"
    ```
 
 ## Project Structure
