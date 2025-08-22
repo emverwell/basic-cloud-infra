@@ -17,7 +17,7 @@ export class InfraStack extends cdk.Stack {
     // VPC
     const vpc = new ec2.Vpc(this, `${environment}Vpc`, {
       maxAzs: 2,
-      cidr: environment === 'Staging' ? '10.0.0.0/16' : '10.1.0.0/16',
+      ipAddresses: ec2.IpAddresses.cidr(environment === 'Staging' ? '10.0.0.0/16' : '10.1.0.0/16'),
     });
 
     // ECS Cluster
@@ -49,6 +49,13 @@ export class InfraStack extends cdk.Stack {
       port: 80,
       open: true,
     });
+    // Add a default fixed response action to satisfy ALB requirements
+    listener.addAction('Default', {
+      action: elbv2.ListenerAction.fixedResponse(200, {
+        contentType: 'text/plain',
+        messageBody: 'OK',
+      }),
+    });
 
     // Exports
     new cdk.CfnOutput(this, `${environment}ClusterArn`, { value: cluster.clusterArn, exportName: `${environment}-EcsClusterArn` });
@@ -57,6 +64,7 @@ export class InfraStack extends cdk.Stack {
     new cdk.CfnOutput(this, `${environment}AlbArn`, { value: alb.loadBalancerArn, exportName: `${environment}-AlbArn` });
     new cdk.CfnOutput(this, `${environment}ListenerArn`, { value: listener.listenerArn, exportName: `${environment}-ListenerArn` });
     new cdk.CfnOutput(this, `${environment}EcsSgId`, { value: ecsSg.securityGroupId, exportName: `${environment}-EcsSgId` });
+    new cdk.CfnOutput(this, `${environment}AlbDnsName`, { value: alb.loadBalancerDnsName, exportName: `${environment}-AlbDnsName` });
 
     // Tagging
     cdk.Tags.of(this).add('Environment', environment);
